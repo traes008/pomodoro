@@ -1,6 +1,7 @@
 import time, sys
 import tkinter as tk
 from datetime import datetime
+from tkinter import messagebox
 
 months_number = {1: "January", 2: "February", 3: "March", 4: "April", 5: "May", 6: "June", 7: "July", 8: "August", 9: "September", 10: "October", 11: "November", 12: "December"}
 
@@ -28,49 +29,88 @@ class Timer:
     def init(self):
         """Initializes the Timer GUI."""
         self.root = tk.Tk()
-        self.root.geometry('300x200')
+        self.root.geometry('400x300')
         self.root.title("Study Timer")
+        self.root.configure(bg='#f0f0f0')  # Light gray background
+
+        # Main frame
+        main_frame = tk.Frame(self.root, bg='#f0f0f0')
+        main_frame.pack(expand=True, fill='both', padx=20, pady=20)
+
+        # Title Label
+        title_label = tk.Label(main_frame, text="Pomodoro Timer", font=("Arial", 18, "bold"), bg='#f0f0f0')
+        title_label.pack(pady=(0, 20))
 
         # Timer Label
-        self.time_label = tk.Label(self.root, text="Study Time: 00:00:00", font=("Arial", 14))
-        self.time_label.grid(column=0, row=1, columnspan=3, pady=10)
+        self.time_label = tk.Label(main_frame, text="Study Time: 00:00:00", 
+                                 font=("Arial", 16), bg='#f0f0f0')
+        self.time_label.pack(pady=10)
 
-        # Buttons
-        self.start_button = tk.Button(self.root, text="Start Timer", command=self.start_timer)
-        self.start_button.grid(column=0, row=0)
+        # Break time label
+        self.break_label = tk.Label(main_frame, text="Break Time: 00:00:00",
+                                  font=("Arial", 12), bg='#f0f0f0')
+        self.break_label.pack(pady=5)
 
-        self.pause_button = tk.Button(self.root, text="Pause", command=self.start_break)
-        self.pause_button.grid(column=1, row=0)
+        # Status label
+        self.status_label = tk.Label(main_frame, text="Not Started", 
+                                   font=("Arial", 10), bg='#f0f0f0', fg='#666666')
+        self.status_label.pack(pady=5)
 
-        self.stop_button = tk.Button(self.root, text="Stop", command=self.end_timer)
-        self.stop_button.grid(column=2, row=0)
+        # Button frame
+        button_frame = tk.Frame(main_frame, bg='#f0f0f0')
+        button_frame.pack(pady=20)
+
+        # Buttons with improved styling
+        button_style = {'font': ('Arial', 10), 'width': 10, 'height': 2}
+        
+        self.start_button = tk.Button(button_frame, text="Start Timer", 
+                                    command=self.start_timer,
+                                    bg='#4CAF50', fg='white', **button_style)
+        self.start_button.pack(side=tk.LEFT, padx=5)
+
+        self.pause_button = tk.Button(button_frame, text="Take Break", 
+                                    command=self.start_break,
+                                    bg='#2196F3', fg='white', **button_style)
+        self.pause_button.pack(side=tk.LEFT, padx=5)
+
+        self.stop_button = tk.Button(button_frame, text="Stop", 
+                                   command=self.end_timer,
+                                   bg='#f44336', fg='white', **button_style)
+        self.stop_button.pack(side=tk.LEFT, padx=5)
 
         self.update_timer_display()
         self.root.mainloop()
 
     def update_timer_display(self):
-        """Updates the timer display every second in HH:MM:SS format."""
-        if self.running and not self.paused:
-            elapsed = self.get_current_time() - self.start_time - sum(self.breaks)
-            self.time_label.config(text=f"Study Time: {self.format_time(elapsed)}")
-        self.root.after(1000, self.update_timer_display)  # Refresh every second
+        """Updates the timer display every second."""
+        if self.running:
+            if not self.paused:
+                elapsed = self.get_current_time() - self.start_time - sum(self.breaks)
+                self.time_label.config(text=f"Study Time: {self.format_time(elapsed)}")
+                self.status_label.config(text="Studying", fg='#4CAF50')
+            else:
+                break_time = self.get_current_time() - self.break_start_time
+                self.break_label.config(text=f"Break Time: {self.format_time(break_time)}")
+                self.status_label.config(text="On Break", fg='#2196F3')
+        
+        self.root.after(1000, self.update_timer_display)
 
     def start_timer(self):
         """Starts the study timer."""
         if not self.running:
             self.start_time = self.get_current_time()
             self.running = True
-            print("Timer started.")
-        else:
-            print("Timer is already running.")
+            self.status_label.config(text="Studying", fg='#4CAF50')
+            self.start_button.config(state='disabled')
 
     def start_break(self):
         """Pauses the timer and starts a break."""
         if self.running and not self.paused:
             self.paused = True
             self.break_start_time = self.get_current_time()
-            self.pause_button.config(text="Unpause", command=self.end_break)
-            print("Break started.")
+            self.pause_button.config(text="End Break", bg='#FFA726')
+            self.status_label.config(text="On Break", fg='#2196F3')
+            self.pause_button.config(command=self.end_break)
 
     def end_break(self):
         """Resumes the study timer after a break."""
@@ -78,19 +118,43 @@ class Timer:
             break_duration = self.get_current_time() - self.break_start_time
             self.breaks.append(break_duration)
             self.paused = False
-            self.pause_button.config(text="Pause", command=self.start_break)
-            print(f"Break ended. Duration: {self.format_time(break_duration)}.")
+            self.pause_button.config(text="Take Break", bg='#2196F3')
+            self.status_label.config(text="Studying", fg='#4CAF50')
+            self.pause_button.config(command=self.start_break)
 
     def end_timer(self):
-        """Stops the timer and calculates total study time."""
+        """Stops the timer and shows the summary."""
         if self.running:
             self.end_time = self.get_current_time()
-            total_time = self.get_total_study_time()
-            print(f"Total study time: {self.format_time(total_time)}")
+            total_study_time = self.get_total_study_time()
+            total_break_time = sum(self.breaks)
+            
+            # Create summary window
+            summary = tk.Toplevel(self.root)
+            summary.title("Session Summary")
+            summary.geometry("300x200")
+            summary.configure(bg='#f0f0f0')
+            
+            # Add summary information
+            tk.Label(summary, text="Session Summary", font=("Arial", 14, "bold"), 
+                    bg='#f0f0f0').pack(pady=10)
+            
+            tk.Label(summary, text=f"Total Study Time: {self.format_time(total_study_time)}", 
+                    font=("Arial", 12), bg='#f0f0f0').pack(pady=5)
+            
+            tk.Label(summary, text=f"Total Break Time: {self.format_time(total_break_time)}", 
+                    font=("Arial", 12), bg='#f0f0f0').pack(pady=5)
+            
+            # Calculate average study session
+            num_breaks = len(self.breaks)
+            if num_breaks > 0:
+                avg_study = total_study_time / (num_breaks + 1)
+                tk.Label(summary, text=f"Average Study Session: {self.format_time(avg_study)}", 
+                        font=("Arial", 12), bg='#f0f0f0').pack(pady=5)
+            
             self.running = False
-            self.save_results()
-        else:
-            print("Timer was not started.")
+            self.start_button.config(state='normal')
+            self.status_label.config(text="Session Ended", fg='#f44336')
 
     def get_total_study_time(self):
         """Calculates the total study time excluding breaks."""
@@ -99,61 +163,6 @@ class Timer:
         total_time = self.get_current_time() - self.start_time - sum(self.breaks)
         return total_time
 
-    def save_results(self):
-        """Saves study results."""
-        print("Saving results...")
-        print(f"Total break time: {self.format_time(sum(self.breaks))}")
-
-class Time():
-    def __init__(self, year, month, day, hour, minute, second):
-        self.year = year
-        self.month = month 
-        self.day = day 
-        self.hour = hour 
-        self.minute = minute        
-        self.second = second 
-
-    def print(self):
-        print(f"Current date: {months_number[self.month]}, {self.day}, {self.year} \nCurrent time: {self.hour:02}:{self.minute:02}:{self.second:02}")
-
-def time_diff(time1: Time, time2: Time):
-    """
-    Takes 2 different times and returns the time between them.
-    For now more or less assumes no study session takes longer than 24h.
-    """
-    dt1 = datetime(time1.year, time1.month, time1.day, time1.hour, time1.minute, time1.second)
-    dt2 = datetime(time2.year, time2.month, time2.day, time2.hour, time2.minute, time2.second)
-    
-    delta = dt2 - dt1  
-
-    print(delta.seconds)
-
-    hours = int(delta.seconds / 3600)
-    minutes = int(delta.seconds % 60)
-    seconds = int(delta.seconds % 3600)
-
-    print(minutes)
-
-    return (hours, minutes, seconds)
-
-def get_current_time():
-    """
-    Function to get the current time. Includes year, month, day, hour, minute, second as an instance of the class Time
-    """
-    year = time.localtime().tm_year
-    month = time.localtime().tm_mon
-    day = time.localtime().tm_mday
-    hour = time.localtime().tm_hour
-    minute = time.localtime().tm_min
-    second = time.localtime().tm_sec
-    return Time(year, month, day, hour, minute, second)
-
 if __name__ == '__main__':
     timer = Timer()
     timer.init()
-
-    # t1 = Time(2025, 5, 4, 12, 30, 45)
-    # t2 = Time(2025, 5, 4, 13, 30, 46)
-
-    # difference = time_diff(t1, t2)
-    # print(difference)
