@@ -2,3 +2,9 @@
 !*.py
 !*.md
 !.gitignore
+build_env/
+dist/
+*.spec
+*.log
+*.pyc
+*.pyo
