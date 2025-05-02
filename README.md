@@ -1,27 +1,18 @@
-# 📚 Pomodoro Study Timer
+# Pomodoro Study Timer
 
-A beautiful and intuitive study timer application built with Python and Tkinter. Track your study sessions, manage breaks, and visualize your productivity over time.
+A study timer application built with Python and Tkinter. Track your study sessions and manage breaks effectively.
 
-![Python Version](https://img.shields.io/badge/python-3.6+-blue.svg)
+![Python Version](https://img.shields.io/badge/python-3.12+-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 
-## ✨ Features
+## Features
 
-- 🕒 Clean and intuitive timer interface
-- ⏸️ Flexible break management
-- 📊 Session statistics tracking
-- 📅 Historical data visualization
-- 💾 Automatic session saving
-- 🎨 Modern UI design with color-coded status indicators
+- Study timer with break management
+- Session statistics tracking
+- Simple and clean interface
+- Color-coded status indicators
 
-## 🚀 Quick Start
-
-### Prerequisites
-
-- Python 3.6 or higher
-- pip (Python package installer)
-
-### Installation
+## Installation
 
 1. Clone the repository:
 ```bash
@@ -45,7 +36,16 @@ source pomodoro_venv/bin/activate
 pip install -r requirements.txt
 ```
 
-### Running the Application
+## Usage
+
+1. Start a study session by clicking "Start Timer"
+2. Take breaks using the "Take Break" button
+3. End your session with the "Stop" button to view a summary of:
+   - Total study time
+   - Total break time
+   - Average study session length
+
+## Running the Application
 
 ```bash
 python main.py
@@ -91,11 +91,6 @@ python main.py
 - Break time analysis
 - Study pattern insights
 
-### History Tracking
-- Daily study summaries
-- Detailed session logs
-- Long-term progress tracking
-
 ## 🛠️ Building from Source
 
 To create a standalone executable:
@@ -122,12 +117,6 @@ Contributions are welcome! Feel free to:
 ## 📝 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🙏 Acknowledgments
-
-- Built with Python and Tkinter
-- Inspired by the Pomodoro Technique
-- Special thanks to all contributors
 
 ---
 *Note: This project was developed with assistance from generative AI tools to ensure best practices and clean code structure.*

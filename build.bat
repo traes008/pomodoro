@@ -11,6 +11,9 @@ call build_env\Scripts\activate.bat
 echo Installing required packages...
 pip install pyinstaller
 
+:: Create assets directory if it doesn't exist
+if not exist "assets" mkdir assets
+
 :: Build the executable with PyInstaller
 echo Building executable...
 pyinstaller --onefile ^
@@ -18,6 +21,7 @@ pyinstaller --onefile ^
             --name pomodoro ^
             --add-data "assets;assets" ^
             --clean ^
+            --hidden-import tkinter ^
             main.py
 
 :: Deactivate virtual environment
