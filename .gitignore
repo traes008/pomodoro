@@ -1,30 +1,57 @@
-# Python virtual environments
-*venv/
-venv/
-pomodoro_venv/
-build_env/
-.env/
-.venv/
-
-# Python byte-compiled files
+# Python
 __pycache__/
 *.py[cod]
 *$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual Environment
+venv/
+env/
+ENV/
+build_env/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Build and Release
+release/
+*.spec
+*.log
+
+# Database
+*.db
+*.sqlite3
+
+# Python virtual environments
+pomodoro_venv/
+.env/
+.venv/
 
 # Distribution/packaging
-dist/
-build/
 *.egg-info/
 *.egg
 
 # PyInstaller
 *.spec
-build/
-dist/
-
-# IDE settings
-.vscode/
-.idea/
 
 # Environment variables
 .env

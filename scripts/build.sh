@@ -12,19 +12,19 @@ echo "Installing required packages..."
 pip install pyinstaller
 
 # Create assets directory if it doesn't exist
-mkdir -p assets
+mkdir -p ../src/pomodoro/assets
 
 # Build the executable with PyInstaller
 echo "Building executable..."
 pyinstaller --onefile \
             --noconsole \
             --name pomodoro \
-            --add-data "assets:assets" \
+            --add-data "../src/pomodoro/assets:assets" \
             --clean \
             --hidden-import tkinter \
-            main.py
+            ../src/pomodoro/__main__.py
 
 # Deactivate virtual environment
 deactivate
 
-echo "Build complete! Executable is in the dist directory"
+echo "Build complete! Executable is in the dist directory" 

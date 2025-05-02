@@ -1,9 +1,7 @@
-import time, sys
+import time
 import tkinter as tk
 from datetime import datetime
 from tkinter import messagebox
-
-months_number = {1: "January", 2: "February", 3: "March", 4: "April", 5: "May", 6: "June", 7: "July", 8: "August", 9: "September", 10: "October", 11: "November", 12: "December"}
 
 class Timer:
     def __init__(self):
@@ -161,8 +159,4 @@ class Timer:
         if not self.running:
             return 0
         total_time = self.get_current_time() - self.start_time - sum(self.breaks)
-        return total_time
-
-if __name__ == '__main__':
-    timer = Timer()
-    timer.init()
+        return total_time 
