@@ -1,6 +1,57 @@
 # Pomodoro Study Timer
 
-A simple, modern Pomodoro study timer built with Python and Tkinter.
+A simple study timer application that helps you track your study sessions and breaks. Keeps track of the time you studied for the day, and the amount of time you were in break. 
+
+## Features
+
+- Track study time and breaks
+- View daily, weekly, and monthly study statistics
+- Simple and intuitive user interface
+- Automatic logging of study sessions
+
+## Installation
+
+1. Clone the repository:
+```bash
+git clone https://github.com/yourusername/pomodoro.git
+cd pomodoro
+```
+
+2. Create a virtual environment (optional but recommended):
+```bash
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+```
+
+3. Install the required dependencies:
+```bash
+pip install -r requirements.txt
+```
+
+## Usage
+
+Run the application:
+```bash
+python src/main.py
+```
+
+### Controls
+
+- **Start Timer**: Begin a study session
+- **Take Break**: Pause the timer and start a break
+- **End Break**: Resume the study session
+- **Stop**: End the current session and view the summary
+
+## Study Log
+
+The application automatically logs your study time in a JSON file (`study_log.json`). You can view your study statistics for:
+- Today
+- This week
+- This month
+
+## Contributing
+
+Feel free to submit issues and enhancement requests!
 
 ---
 

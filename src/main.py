@@ -1,8 +1,8 @@
-from pomodoro.timer import Timer
+from timer import Timer
 
 def main():
     timer = Timer()
     timer.init()
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main() 
