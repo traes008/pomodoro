@@ -58,3 +58,15 @@ pomodoro_venv/
 
 # Logs
 *.log
+
+# Data files
+data/*.json
+data/*.csv
+data/*.db
+data/*.sqlite3
+data/*.log
+data/*.tmp
+data/*.bak
+
+# Keep the data directory but ignore its contents
+!data/.gitkeep
