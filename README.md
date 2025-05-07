@@ -42,7 +42,7 @@ python src/main.py
 - **End Break**: Resume the study session
 - **Stop**: End the current session and view the summary
 
-## Study Log
+## Study Log (Work In Progress)
 
 The application automatically logs your study time in a JSON file (`study_log.json`). You can view your study statistics for:
 - Today
