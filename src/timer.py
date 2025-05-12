@@ -12,6 +12,7 @@ class Timer:
         self.paused = False
         self.break_start_time = None
         self.running = False  # Track if the timer is running
+        self.current_session_start_time = None  # Track when current session started
 
     def get_current_time(self):
         """Returns the current time in seconds."""
@@ -39,9 +40,14 @@ class Timer:
         title_label = tk.Label(main_frame, text="Pomodoro Timer", font=("Arial", 18, "bold"), bg='#f0f0f0')
         title_label.pack(pady=(0, 20))
 
+        # Current Session Label
+        self.current_session_label = tk.Label(main_frame, text="Current Session: 00:00:00", 
+                                           font=("Arial", 16), bg='#f0f0f0')
+        self.current_session_label.pack(pady=5)
+
         # Timer Label
-        self.time_label = tk.Label(main_frame, text="Study Time: 00:00:00", 
-                                 font=("Arial", 16), bg='#f0f0f0')
+        self.time_label = tk.Label(main_frame, text="Total Study Time: 00:00:00", 
+                                 font=("Arial", 14), bg='#f0f0f0')
         self.time_label.pack(pady=10)
 
         # Break time label
@@ -84,7 +90,9 @@ class Timer:
         if self.running:
             if not self.paused:
                 elapsed = self.get_current_time() - self.start_time - sum(self.breaks)
-                self.time_label.config(text=f"Study Time: {self.format_time(elapsed)}")
+                current_session = self.get_current_time() - self.current_session_start_time
+                self.current_session_label.config(text=f"Current Session: {self.format_time(current_session)}")
+                self.time_label.config(text=f"Total Study Time: {self.format_time(elapsed)}")
                 self.status_label.config(text="Studying", fg='#4CAF50')
             else:
                 break_time = self.get_current_time() - self.break_start_time
@@ -97,6 +105,7 @@ class Timer:
         """Starts the study timer."""
         if not self.running:
             self.start_time = self.get_current_time()
+            self.current_session_start_time = self.get_current_time()
             self.running = True
             self.status_label.config(text="Studying", fg='#4CAF50')
             self.start_button.config(state='disabled')
@@ -116,6 +125,7 @@ class Timer:
             break_duration = self.get_current_time() - self.break_start_time
             self.breaks.append(break_duration)
             self.paused = False
+            self.current_session_start_time = self.get_current_time()  # Reset current session time
             self.pause_button.config(text="Take Break", bg='#2196F3')
             self.status_label.config(text="Studying", fg='#4CAF50')
             self.pause_button.config(command=self.start_break)
