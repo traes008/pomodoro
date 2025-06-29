@@ -133,6 +133,8 @@ class Timer:
     def end_timer(self):
         """Stops the timer and shows the summary."""
         if self.running:
+            if self.paused:
+                self.end_break()
             self.end_time = self.get_current_time()
             total_study_time = self.get_total_study_time()
             total_break_time = sum(self.breaks)
