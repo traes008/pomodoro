@@ -28,7 +28,7 @@ class Timer:
     def init(self):
         """Initializes the Timer GUI."""
         self.root = tk.Tk()
-        self.root.geometry('400x300')
+        self.root.geometry('400x350')
         self.root.title("Study Timer")
         self.root.configure(bg='#f0f0f0')  # Light gray background
 
@@ -94,6 +94,7 @@ class Timer:
                 self.current_session_label.config(text=f"Current Session: {self.format_time(current_session)}")
                 self.time_label.config(text=f"Total Study Time: {self.format_time(elapsed)}")
                 self.status_label.config(text="Studying", fg='#4CAF50')
+                self.break_label.config(text=f"Break Time: 00:00:00")
             else:
                 break_time = self.get_current_time() - self.break_start_time
                 self.break_label.config(text=f"Break Time: {self.format_time(break_time)}")
@@ -154,13 +155,6 @@ class Timer:
             
             tk.Label(summary, text=f"Total Break Time: {self.format_time(total_break_time)}", 
                     font=("Arial", 12), bg='#f0f0f0').pack(pady=5)
-            
-            # Calculate average study session
-            num_breaks = len(self.breaks)
-            if num_breaks > 0:
-                avg_study = total_study_time / (num_breaks + 1)
-                tk.Label(summary, text=f"Average Study Session: {self.format_time(avg_study)}", 
-                        font=("Arial", 12), bg='#f0f0f0').pack(pady=5)
             
             self.running = False
             self.start_button.config(state='normal')
