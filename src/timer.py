@@ -2,6 +2,7 @@ import time
 import tkinter as tk
 from datetime import datetime
 from tkinter import messagebox
+import database
 
 class Timer:
     def __init__(self):
@@ -105,7 +106,10 @@ class Timer:
     def start_timer(self):
         """Starts the study timer."""
         if not self.running:
-            self.start_time = self.get_current_time()
+            study_time = database.read_today()
+            print(f"Starting timer with {study_time} seconds")
+            # Set start_time so that elapsed = study_time at the beginning
+            self.start_time = self.get_current_time() - study_time
             self.current_session_start_time = self.get_current_time()
             self.running = True
             self.status_label.config(text="Studying", fg='#4CAF50')
@@ -159,6 +163,9 @@ class Timer:
             self.running = False
             self.start_button.config(state='normal')
             self.status_label.config(text="Session Ended", fg='#f44336')
+
+            # Save session data
+            database.save_today(total_study_time)
 
     def get_total_study_time(self):
         """Calculates the total study time excluding breaks."""
